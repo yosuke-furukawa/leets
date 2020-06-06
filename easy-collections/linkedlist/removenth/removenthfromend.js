@@ -35,6 +35,6 @@ var removeNthFromEnd = function(head, n) {
 };
 
 const ln = new ListNode(1);
-removeNthFromEnd(ln, 1);
+console.log(removeNthFromEnd(ln, 1));
 console.log(ln);
 
