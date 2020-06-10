@@ -16,16 +16,17 @@ var solution = function(isBadVersion) {
      * @return {integer} The first bad version
      */
     return function(n) {
-        let left  = 0 
-        let right = n
-        let result = -1
-        while(left <= right) {
-            const middle = Math.floor(left + (right - left)/2)
-            if(isBadVersion(middle)) {
-                right = middle - 1
-                result = middle
+        var low  = 0 
+        var high = n
+        var mid = Math.floor((low + high)/2)
+        var result = mid;
+        while(low <= high) {
+            mid = Math.floor((low + high)/2)
+            if(isBadVersion(mid)) {
+                high = mid - 1            
+                result = mid;
             } else {
-                left = middle + 1
+                low = mid + 1
             }
         }
         return result
