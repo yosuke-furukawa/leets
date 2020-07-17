@@ -7,11 +7,6 @@ class BinaryHeap {
   push(element) {
     this.content.push(element);
     var n = this.bubbleUp(this.content.length - 1);
-    if (this.content[n] - this.content[n-1] > 0) {
-      console.log(n-Math.floor((n)/2));
-    } else {
-      console.log(n);
-    }
   }
 
   size() {
