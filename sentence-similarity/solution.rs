@@ -9,10 +9,8 @@ impl Solution {
       for pair in similar_pairs.iter() {
         let v1 = pair.first().unwrap();
         let v2 = pair.last().unwrap();
-        map.entry(v1).or_insert(HashSet::new());
-        map.entry(v2).or_insert(HashSet::new());
-        map.get_mut(v1).unwrap().insert(v2);
-        map.get_mut(v2).unwrap().insert(v1);
+        map.entry(v1).or_insert(HashSet::new()).insert(v2);
+        map.entry(v2).or_insert(HashSet::new()).insert(v1);
       }
       
       if sentence1.len() != sentence2.len() {
