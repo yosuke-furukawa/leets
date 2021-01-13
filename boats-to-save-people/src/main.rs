@@ -5,34 +5,14 @@ impl Solution {
         let mut people = people;
         people.sort_unstable();
         let mut result = 0;
+        let mut s: i32 = 0;
         let mut e: i32 = people.len() as i32 - 1;
-        while people.len() > 0 {
-            let start = people[0];
-            let end = people[e as usize];
-            if limit - start < start {
-                result += 1;
-                people.remove(0);
-                e -= 1;
-                continue;
+        while s <= e {
+            result += 1;
+            if people[s as usize] + people[e as usize] <= limit {
+                s += 1;
             }
-            if e == 0 {
-                result += 1;
-                people.remove(0);
-                e = people.len() as i32 - 1;
-                continue;
-            }
-            if limit - start - end >= 0 {
-                result += 1;
-                people.remove(e as usize);
-                people.remove(0);
-                e = people.len() as i32 - 1;
-            } else if e > 0{
-                e -= 1;
-            } else {
-                result += 1;
-                people.remove(0);
-                e = people.len() as i32 - 1;
-            }
+            e -= 1;
         }
         result
     }
