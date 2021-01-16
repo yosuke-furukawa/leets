@@ -9,6 +9,8 @@ impl Solution {
         for (id, score) in items.iter().map(|v| (v[0], v[1])) {
             let mut scores = highmap.entry(id).or_insert(vec![]).clone();
 
+            let length = scores.len();
+            
             if scores.len() < 5 {
                 scores.push(score);
                 highmap.insert(id, scores);
