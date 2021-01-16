@@ -1,11 +1,18 @@
+use std::collections::BinaryHeap;
+
 impl Solution {
-    pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
-        let mut nums = nums;
-        nums.sort_unstable_by(|a, b| b.cmp(a));
-        nums[(k - 1) as usize]
+    pub fn find_kth_largest(nums: Vec<i32>, mut k: i32) -> i32 {
+        let mut heap = BinaryHeap::from(nums);
+
+        let mut n = Some(0 as i32);
+        while k > 0 {
+            n = heap.pop();
+            k -= 1;
+        }
+
+        n.unwrap()
     }
 }
-
 struct Solution;
 
 fn main() {
