@@ -1,15 +1,6 @@
 impl Solution {
     pub fn count_vowel_strings(n: i32) -> i32 {
-        let mut mem = [1; 5];
-
-        for _ in 1..n {
-            mem[1] += mem[0];
-            mem[2] += mem[1];
-            mem[3] += mem[2];
-            mem[4] += mem[3];
-        }
-
-        mem.iter().sum()
+        (n+4)*(n+3)*(n+2)*(n+1)/24
     }
 }
 
