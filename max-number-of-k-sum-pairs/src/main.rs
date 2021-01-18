@@ -5,18 +5,13 @@ impl Solution {
     pub fn max_operations(nums: Vec<i32>, k: i32) -> i32 {
         let mut count: HashMap<i32, i32> = HashMap::new();
         for n in nums.iter() {
-            match n {
-                n if count.contains_key(&n) => count.insert(*n, count.get(&n).unwrap() + 1),
-                _ => count.insert(*n, 1),
-            };
+            *count.entry(*n).or_insert(0) += 1;
         }
 
         let mut result = 0;
         for n in count.keys() {
-            if *n > k / 2 {
-                continue;
-            }
             result += match n {
+                n if *n > k / 2 => continue,
                 n if (k as f64 / 2.0) != *n as f64 => {
                     *min(count.get(&n).unwrap(), count.get(&(k - n)).unwrap_or(&0))
                 }
