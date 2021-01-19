@@ -4,8 +4,8 @@ use std::collections::HashMap;
 impl Solution {
     pub fn max_operations(nums: Vec<i32>, k: i32) -> i32 {
         let mut count: HashMap<i32, i32> = HashMap::new();
-        for n in nums.iter() {
-            *count.entry(*n).or_insert(0) += 1;
+        for n in nums {
+            *count.entry(n).or_insert(0) += 1;
         }
 
         let mut result = 0;
