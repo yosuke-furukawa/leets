@@ -19,10 +19,10 @@ impl Solution {
                         return false;
                     }
                 }
-                _ => continue,
+                _ => return false,
             }
         }
-        stack.len() == 0
+        stack.is_empty()
     }
 }
 
