@@ -8,26 +8,31 @@ impl Solution {
             return true;
         }
 
-        let mut min_diff = MAX;
-        let mut diff = -1;
-        for num in nums {
+        let result = nums.iter().try_fold((MAX, -1), |(min_diff, diff), num| {
             match num {
                 1 => {
+                    let mut m = min_diff;
                     if diff >= 0 {
-                        min_diff = min(min_diff, diff);
+                        m = min(min_diff, diff);
+                        if m < k {
+                            return None;
+                        }
                     }
-                    diff = 0;
+                    Some((m, 0))
                 },
                 0 if diff >= 0 => {
-                    diff += 1;
+                    Some((min_diff, diff + 1))
                 },
-                _ => continue,
+                _ => Some((min_diff, diff)),
             }
+        });
+
+
+        if result == None {
+            return false;
         }
-        if min_diff == MAX {
-            return true;
-        }
-        min_diff == k
+        let (min_diff, _) = result.unwrap();
+        min_diff == k || min_diff == MAX
     }
 }
 
