@@ -1,15 +1,12 @@
 impl Solution {
     pub fn concatenated_binary(n: i32) -> i32 {
         let mut result: u128 = 0;
-
+        let mut len = 0;
         for i in 1..=n {
-            let mut k: u128 = i as u128;
-            let mut size: u128 = 0;
-            while k > 0 {
-                size += 1;
-                k >>= 1;
+            if i & (i - 1) == 0 {
+                len += 1;
             }
-            result = ((result << size) | i as u128) % 1000000007;
+            result = ((result << len) | i as u128) % 1000000007;
         }
         result as i32
     }
