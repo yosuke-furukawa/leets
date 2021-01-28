@@ -1,27 +1,17 @@
-const CHARS: [char; 26] = [
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-    't', 'u', 'v', 'w', 'x', 'y', 'z',
-];
-
 impl Solution {
     pub fn get_smallest_string(n: i32, k: i32) -> String {
-        let mut chars = Vec::with_capacity(n as usize);
+        let mut chars = vec![0u8; n as _];
         let mut max = k - n;
-        for _ in 0..n {
-            chars.push(match max {
-                m if m >= 25 => {
-                    max -= 25;
-                    'z'
-                }
-                m if m < 25 && m >= 1 => {
-                    let c = max;
-                    max -= max;
-                    CHARS[c as usize]
-                }
-                _ => 'a',
-            });
+        for c in chars.iter_mut().rev() {
+            let offset = match max {
+                max if max >= 25 => 25,
+                max if max < 25 && max > 0 => max,
+                _ => 0,   
+            } as u8;
+            *c = b'a' + offset as u8;
+            max -= offset as i32;
         }
-        chars.into_iter().rev().collect()
+        unsafe { String::from_utf8_unchecked(chars) }
     }
 }
 
