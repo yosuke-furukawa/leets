@@ -28,15 +28,15 @@ impl Leaderboard {
     fn top(&mut self, mut k: i32) -> i32 {
         let mut sum = 0;
         for (s, &v) in self.scores.iter().rev() {
-            for _ in 0..v {
-                sum += s;
-                k -= 1;
-                if k == 0 {
-                    return sum;
-                }
+            if k < v as i32 {
+                sum = sum + s * k;
+                break;
+            } else {
+                sum = sum + s * v as i32;
+                k -= v as i32;
             }
         }
-        0
+        sum
     }
 
     fn reset(&mut self, player_id: i32) {
