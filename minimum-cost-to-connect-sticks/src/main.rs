@@ -1,5 +1,5 @@
-use std::cmp::Reverse;
 use std::collections::BinaryHeap;
+use std::cmp::Reverse;
 
 impl Solution {
     pub fn connect_sticks(sticks: Vec<i32>) -> i32 {
@@ -10,18 +10,18 @@ impl Solution {
         for n in sticks {
             heap.push(Reverse(n));
         }
-        let mut sticks = vec![];
+        let mut cost = 0;
         while heap.len() > 1 {
             let first = heap.pop();
             let second = heap.pop();
             if let Some(Reverse(f)) = first {
-                if let Some(Reverse(s)) = second {
+                if  let Some(Reverse(s)) = second {
                     heap.push(Reverse(f + s));
-                    sticks.push(f + s);
+                    cost += f + s;
                 }
             }
         }
-        sticks.iter().fold(0, |sum, x| sum + *x)
+        cost
     }
 }
 
