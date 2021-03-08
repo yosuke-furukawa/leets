@@ -5,13 +5,11 @@ struct MyHashMap {
     capacity: i32,
 }
 
-
-/** 
+/**
  * `&self` means the method takes an immutable reference.
  * If you need a mutable reference, change it to `&mut self` instead.
  */
 impl MyHashMap {
-
     /** Initialize your data structure here. */
     fn new() -> Self {
         let capacity: i32 = 987;
@@ -20,7 +18,7 @@ impl MyHashMap {
             capacity,
         }
     }
-    
+
     /** value will always be non-negative. */
     fn put(&mut self, key: i32, value: i32) {
         let hash = key % self.capacity;
@@ -30,9 +28,9 @@ impl MyHashMap {
             let mut found = false;
             for v in self.data[hash as usize].iter_mut() {
                 if v.0 == key {
-                   *v = (key, value);
-                   found = true;
-                   break; 
+                    *v = (key, value);
+                    found = true;
+                    break;
                 }
             }
             if !found {
@@ -40,7 +38,7 @@ impl MyHashMap {
             }
         }
     }
-    
+
     /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
     fn get(&self, key: i32) -> i32 {
         let hash = key % self.capacity;
@@ -51,11 +49,15 @@ impl MyHashMap {
         }
         -1
     }
-    
+
     /** Removes the mapping of the specified value key if this map contains a mapping for the key */
     fn remove(&mut self, key: i32) {
         let hash = key % self.capacity;
-        self.data[hash as usize] = self.data[hash as usize].iter().filter(|&v| v.0 != key).cloned().collect();
+        self.data[hash as usize] = self.data[hash as usize]
+            .iter()
+            .filter(|&v| v.0 != key)
+            .cloned()
+            .collect();
     }
 }
 
