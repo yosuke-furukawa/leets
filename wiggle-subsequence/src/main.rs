@@ -1,25 +1,16 @@
 impl Solution {
     pub fn wiggle_max_length(nums: Vec<i32>) -> i32 {
-        let mut count = 1;
-        let mut pn = 0;
-        for n in nums.as_slice().windows(2) {
-            match (pn, n[0], n[1]) {
-                (_, _, _) if pn > 0 && n[0] < n[1] => {
-                    count += 1;
-                    pn = -1;
+        nums.as_slice()
+            .windows(2)
+            .fold((1, 0), |(count, pn), n| {
+                let diff = n[1] - n[0];
+                if diff == 0 || (pn as i32).signum() == diff.signum() {
+                    (count, pn)
+                } else {
+                    (count + 1, diff)
                 }
-                (_, _, _) if pn < 0 && n[0] > n[1] => {
-                    count += 1;
-                    pn = 1;
-                }
-                (_, _, _) if pn == 0 && n[0] != n[1] => {
-                    count += 1;
-                    pn = n[0] - n[1];
-                }
-                _ => continue,
-            }
-        }
-        count
+            })
+            .0
     }
 }
 
