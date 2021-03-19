@@ -1,7 +1,6 @@
 impl Solution {
     pub fn wiggle_max_length(nums: Vec<i32>) -> i32 {
-        nums.as_slice()
-            .windows(2)
+        nums.windows(2)
             .fold((1, 0), |(count, pn), n| {
                 let diff = n[1] - n[0];
                 if diff == 0 || (pn as i32).signum() == diff.signum() {
