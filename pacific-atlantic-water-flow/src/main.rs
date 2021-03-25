@@ -20,7 +20,6 @@ impl Solution {
             if reachable.contains(&(nrow, ncol)) {
                 continue;
             }
-            // println!("{}, {}, {}, {}, {}, {}", nrow, ncol, row, col, max_row, max_col);
             if matrix[nrow as usize][ncol as usize] < matrix[row as usize][col as usize] {
                 continue;
             }
