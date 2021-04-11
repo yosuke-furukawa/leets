@@ -1,24 +1,33 @@
 use std::cell::RefCell;
-use std::collections::HashMap;
+use std::collections::VecDeque;
 use std::rc::Rc;
 
 impl Solution {
-    fn dfs(node: Option<&Rc<RefCell<TreeNode>>>, level: i32, map: &mut HashMap<i32, i32>) -> i32 {
-        let mut l = level;
-        if let Some(n) = node {
-            let node = n.borrow();
-            *map.entry(level).or_insert(0) += node.val;
-            l = l.max(Self::dfs(node.left.as_ref(), level + 1, map));
-            l = l.max(Self::dfs(node.right.as_ref(), level + 1, map));
-            l
-        } else {
-            l - 1
-        }
-    }
     pub fn deepest_leaves_sum(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-        let mut map = HashMap::new();
-        let max = Self::dfs(root.as_ref(), 0, &mut map);
-        *map.get(&max).unwrap()
+        let mut queue = VecDeque::new();
+        let mut current = VecDeque::new();
+        if let Some(r) = root {
+            queue.push_back(r);
+        }
+        while !queue.is_empty() {
+            current = queue.clone();
+            queue.clear();
+            for node in current.iter() {
+                let left = node.borrow_mut().left.take();
+                let right = node.borrow_mut().right.take();
+                if let Some(l) = left {
+                    queue.push_back(l);
+                }
+                if let Some(r) = right {
+                    queue.push_back(r);
+                }
+            }
+        }
+        let mut sum = 0;
+        for node in current.iter() {
+            sum += node.borrow().val;
+        }
+        sum
     }
 }
 
@@ -43,7 +52,6 @@ impl TreeNode {
 }
 
 pub fn to_tree(vec: Vec<Option<i32>>) -> Option<Rc<RefCell<TreeNode>>> {
-    use std::collections::VecDeque;
     let head = Some(Rc::new(RefCell::new(TreeNode::new(vec[0].unwrap()))));
     let mut queue = VecDeque::new();
     queue.push_back(head.as_ref().unwrap().clone());
