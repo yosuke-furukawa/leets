@@ -5,16 +5,19 @@ use std::rc::Rc;
 impl Solution {
     pub fn deepest_leaves_sum(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
         let mut queue = VecDeque::new();
-        let mut current = VecDeque::new();
         if let Some(r) = root {
             queue.push_back(r);
         }
+        let mut sum = 0;
         while !queue.is_empty() {
-            current = queue.clone();
+            let current = queue.clone();
             queue.clear();
+            sum = 0;
             for node in current.iter() {
-                let left = node.borrow_mut().left.take();
-                let right = node.borrow_mut().right.take();
+                let mut n = node.borrow_mut();
+                sum += n.val;
+                let left = n.left.take();
+                let right = n.right.take();
                 if let Some(l) = left {
                     queue.push_back(l);
                 }
@@ -22,10 +25,6 @@ impl Solution {
                     queue.push_back(r);
                 }
             }
-        }
-        let mut sum = 0;
-        for node in current.iter() {
-            sum += node.borrow().val;
         }
         sum
     }
