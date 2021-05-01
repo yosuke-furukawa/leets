@@ -27,14 +27,15 @@ impl Trie {
             node = Trie::moving(node)
                 .children
                 .entry(c)
-                .or_insert_with(|| {
+                .or_insert_with(|| { 
                     let mut t = TrieNode::default();
                     t.number = number;
                     t
                 });
+            node.number = node.number.max(number);
         }
         node.word = word;
-        node.number = number;
+        node.number = node.number.max(number);
     }
     fn starts_with(&self, word: String) -> i32 {
         let mut node = &self.root;
@@ -60,12 +61,12 @@ struct WordFilter {
 impl WordFilter {
     fn new(words: Vec<String>) -> Self {
         let mut trie = Trie::new();
-        for (i, word) in words.iter().rev().enumerate() {
+        for (i, word) in words.iter().enumerate() {
             let mut key = "#".to_string() + word.as_str();
-            trie.insert(key.clone(), (words.len() - i - 1) as i32);
+            trie.insert(key.clone(), i as i32);
             for c in word.chars().rev() {
                 key = c.to_string() + key.as_str();
-                trie.insert(key.clone(), (words.len() - i - 1) as i32);
+                trie.insert(key.clone(), i as i32);
             }
         }
         Self { dict: trie }
