@@ -15,7 +15,7 @@ struct Trie {
 impl Trie {
     fn new() -> Self {
         Self {
-            root: TrieNode::default()
+            root: TrieNode::default(),
         }
     }
     fn moving<T>(t: T) -> T {
@@ -24,14 +24,9 @@ impl Trie {
     fn insert(&mut self, word: String, number: i32) {
         let mut node = &mut self.root;
         for c in word.chars() {
-            node = Trie::moving(node)
-                .children
-                .entry(c)
-                .or_insert_with(|| { 
-                    let mut t = TrieNode::default();
-                    t.number = number;
-                    t
-                });
+            node = Trie::moving(node).children.entry(c).or_insert_with(|| {
+                TrieNode { number, ..Default::default() }
+            });
             node.number = node.number.max(number);
         }
         node.word = word;
