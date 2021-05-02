@@ -5,9 +5,9 @@ impl Solution {
             if sensor1[i] == sensor2[i] {
                 continue;
             }
-            if sensor1.get(i + 1..) == sensor2.get(i..sensor2.len() - 1) {
+            if sensor1.get(i+1).is_some() && sensor1.get(i+1..) == sensor2.get(i..sensor2.len()-1) {
                 diff = 2;
-            } else if sensor1.get(i..sensor1.len() - 1) == sensor2.get(i + 1..) {
+            } else if sensor2.get(i+1).is_some() && sensor1.get(i..sensor1.len()-1) == sensor2.get(i+1..) {
                 diff = 1;
             }
             break;
@@ -19,15 +19,6 @@ impl Solution {
 struct Solution;
 
 fn main() {
-    println!(
-        "{}",
-        Solution::bad_sensor(vec![2, 3, 4, 5], vec![2, 1, 3, 4])
-    );
-    println!(
-        "{}",
-        Solution::bad_sensor(
-            vec![8, 2, 2, 6, 3, 8, 7, 2, 5, 3],
-            vec![2, 8, 2, 2, 6, 3, 8, 7, 2, 5]
-        )
-    );
+    println!("{}", Solution::bad_sensor(vec![2,3,4,5], vec![2,1,3,4]));
+    println!("{}", Solution::bad_sensor(vec![8,2,2,6,3,8,7,2,5,3], vec![2,8,2,2,6,3,8,7,2,5]));
 }
