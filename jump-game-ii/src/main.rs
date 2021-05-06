@@ -1,24 +1,24 @@
-impl Solution {
-    pub fn jump(nums: Vec<i32>) -> i32 {
-        let n = nums.len();
-        if n < 2 {
-            return 0;
-        }
-
-        let mut max_pos = nums[0];
-        let mut max_steps = nums[0];
-
-        let mut jumps = 1;
-        for (i, n) in nums.iter().enumerate().take(n).skip(1) {
-            if max_steps < i as i32 {
-                jumps += 1;
-                max_steps = max_pos;
+    impl Solution {
+        pub fn jump(nums: Vec<i32>) -> i32 {
+            let n = nums.len();
+            if n < 2 {
+                return 0;
             }
-            max_pos = max_pos.max(n + i as i32);
+
+            let mut max_pos = nums[0];
+            let mut max_steps = nums[0];
+
+            let mut jumps = 1;
+            for (i, n) in nums.iter().enumerate().take(n).skip(1) {
+                if max_steps < i as i32 {
+                    jumps += 1;
+                    max_steps = max_pos;
+                }
+                max_pos = max_pos.max(n + i as i32);
+            }
+            jumps
         }
-        jumps
     }
-}
 
 struct Solution;
 
