@@ -7,5 +7,8 @@ var isNumber = function(s) {
   if (s.length === 0) {
     return false;
   }
+  if (s.includes("Infinity")) {
+    return false;
+  }
   return s == +s;
-};
+};;
