@@ -1,5 +1,5 @@
 impl Solution {
-    fn is_valid(board: &Vec<Vec<i32>>,  row: i32, col: i32, n: i32) -> bool {
+    fn is_valid(board: &[Vec<i32>], row: i32, col: i32, n: i32) -> bool {
         for r in 0..row {
             if board[r as usize][col as usize] == 1 {
                 return false;
@@ -27,12 +27,16 @@ impl Solution {
             }
         }
 
-        return true;
+        true
     }
     fn backtrack(board: &mut Box<Vec<Vec<i32>>>, row: i32, n: i32, answers: &mut Vec<Vec<String>>) {
         for col in 0..n {
             if Self::is_valid(board.as_ref(), row, col, n) {
-                *board.get_mut(row as usize).unwrap().get_mut(col as usize).unwrap() = 1;
+                *board
+                    .get_mut(row as usize)
+                    .unwrap()
+                    .get_mut(col as usize)
+                    .unwrap() = 1;
                 if row + 1 == n {
                     let mut answer = vec![];
                     for b in board.as_ref() {
