@@ -1,63 +1,90 @@
 impl Solution {
-    fn find_common_word_count(word1: &String, word2: &String) -> (usize, String) {
-        let w1_len = word1.len();
-        let w2_len = word2.len();
-        let mut max = 0;
-        let mut word = String::new();
-        // check suffix word1 and prefix word2
-        for i in 0..w1_len.min(w2_len) {
-            if word1.get((w1_len - i)..w1_len) == word2.get(0..i) {
-                if max < i {
-                    max = i;
-                    word = word1.clone() + word2.get(i..w2_len).unwrap();
-                }
-            }
-        }
-
-        // check suffix word2 and prefix word1
-        for i in 0..w1_len.min(w2_len) {
-            if word1.get(0..i) == word2.get((w2_len - i)..w2_len) {
-                if max < i {
-                    max = i;
-                    word = word2.clone() + word1.get(i..w1_len).unwrap();
-                }
-            }
-        }
-
-        (max, word)
-    }
     pub fn shortest_superstring(words: Vec<String>) -> String {
-        let mut words = words;
-        let mut n = words.len();
+        let n = words.len();
+        let mut overlaps = vec![vec![0; n]; n];
 
-        while n > 1 {
-            let mut max = 0;
-            let mut max_str = String::new();
-            let mut l = 0;
-            let mut r = 0;
-            for i in 0..n {
-                for j in i+1..n {
-                    let (count, s) = Solution::find_common_word_count(&words[i], &words[j]);
-                    if max <= count {
-                        max = count;
-                        max_str = s;
-                        l = i;
-                        r = j;
+        for i in 0..n {
+            for j in 0..n {
+                if i != j {
+                    let m = words[i].len().min(words[j].len());
+                    for k in (0..m).rev() {
+                        if words[i].ends_with(words[j].get(0..k).unwrap()) {
+                            overlaps[i][j] = k;
+                            break;
+                        }
                     }
                 }
             }
+        }
 
-            n -= 1;
+        let mut dp = vec![vec![0; n]; 1<<n];
+        let mut parent: Vec<Vec<i32>> = vec![vec![0; n]; 1<<n];
 
-            if max == 0 {
-                let w = words[0].clone() + &words[n];
-                words[0] = w;
-            } else {
-                words[l] = max_str;
-                words[r] = words[n].clone();
+        for mask in 0..1<<n {
+            parent[mask] = vec![-1; n];
+
+            for bit in 0..n {
+                if ((mask >> bit) & 1) > 0 {
+                    let pmask = mask ^ (1 << bit);
+                    if pmask == 0 {
+                        continue;
+                    }
+                    for i in 0..n {
+                        if (pmask >> i) & 1 > 0 {
+                            let val = dp[pmask][i] + overlaps[i][bit];
+                            if val > dp[mask][bit] {
+                                dp[mask][bit] = val;
+                                parent[mask][bit] = i as i32;
+                            }
+                        }
+                    }
+                }
             }
         }
-        words[0].clone()
+
+        let mut perm = vec![0; n];
+        let mut seen = vec![false; n];
+        let mut t = 0;
+        let mut mask = (1 << n) - 1;
+
+        let mut p: i32 = 0;
+        for j in 0..n {
+            if dp[(1<<n) - 1][j] > dp[(1<<n) - 1][p as usize] {
+                p = j as i32;
+            }
+        }
+
+        // Follow parents down backwards path that retains maximum overlap
+        while p != -1 {
+            perm[t] = p;
+            t += 1;
+            seen[p as usize] = true;
+            let p2 = parent[mask][p as usize];
+            mask ^= 1 << p;
+            p = p2;
+        }
+
+        // Reverse perm
+        for i in 0..t/2 {
+            let v = perm[i];
+            perm[i] = perm[t-1-i];
+            perm[t-1-i] = v;
+        }
+
+        // Fill in remaining words not yet added
+        for i in 0..n {
+            if !seen[i] {
+                perm[t] = i as i32;
+                t += 1;
+            }
+        }
+
+        let mut ans = words[perm[0] as usize].clone();
+        for i in 1..n {
+            let overlap = overlaps[perm[i-1] as usize][perm[i] as usize];
+            ans += words[perm[i] as usize].get(overlap..).unwrap();
+        }
+        ans
     }
 }
 
