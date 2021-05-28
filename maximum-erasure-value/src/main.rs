@@ -1,30 +1,27 @@
 use std::collections::HashSet;
-use std::collections::VecDeque;
 
 impl Solution {
     pub fn maximum_unique_subarray(nums: Vec<i32>) -> i32 {
         let mut l = 0;
         let mut r = 0;
         let n = nums.len();
-        let mut queue = VecDeque::new();
-        queue.push_back(nums[l]);
         let mut set = HashSet::new();
         set.insert(nums[l]);
-        let mut sum = 0;
+        let mut max = nums[l];
+        let mut sum = nums[l];
         while l < n && r <= n {
-            sum = sum.max(queue.iter().sum());
+            max = max.max(sum);
             if nums.get(r + 1).is_some() && !set.contains(&nums[r + 1]) {
-                queue.push_back(nums[r + 1]);
                 set.insert(nums[r + 1]);
+                sum += nums[r + 1];
                 r += 1;
-                continue;
             } else {
-                let popped = queue.pop_front().unwrap();
-                set.remove(&popped);
+                set.remove(&nums[l]);
+                sum -= nums[l];
                 l += 1;
             }
         }
-        sum
+        max
     }
 }
 
