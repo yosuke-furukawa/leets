@@ -1,6 +1,5 @@
 impl Solution {
     fn backtrack(matches: &mut [i32], matchsticks: &[i32], match_index: usize) -> bool {
-        // println!("{:?}, match index {}", matches, match_index);
         if match_index == matchsticks.len() {
             return matches.iter().all(|m| *m == 0);
         }
@@ -23,7 +22,6 @@ impl Solution {
 
         let avg = sum / 4;
         let mut matches = vec![avg; 4];
-        // matchsticks.sort_unstable();
         Solution::backtrack(&mut matches, &matchsticks, 0)
     }
 }
