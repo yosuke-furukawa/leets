@@ -14,7 +14,7 @@ impl Solution {
             v.push(c);
         }
         v.into_iter()
-            .fold(String::new(), |acc, cur| acc + cur.to_string().as_str())
+            .fold(String::new(), |acc, cur| acc + &cur.to_string())
     }
 }
 
