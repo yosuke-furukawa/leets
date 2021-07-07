@@ -1,13 +1,17 @@
+use std::collections::BinaryHeap;
+
 impl Solution {
     pub fn kth_smallest(matrix: Vec<Vec<i32>>, k: i32) -> i32 {
-        let mut array = vec![];
+        let mut heap = BinaryHeap::new();
         for m in matrix.iter() {
             for num in m.iter() {
-                array.push(*num);
+                heap.push(num);
             }
         }
-        array.sort_unstable();
-        array[k as usize - 1]
+        while heap.len() > k as usize {
+            heap.pop();
+        }
+        *heap.pop().unwrap()
     }
 }
 
@@ -30,4 +34,5 @@ fn main() {
         "{}",
         Solution::kth_smallest(grid![[1, 5, 9], [10, 11, 13], [12, 13, 15]], 8)
     );
+    println!("{}", Solution::kth_smallest(grid![[1, 2], [1, 3]], 2));
 }
