@@ -1,16 +1,12 @@
 impl Solution {
     pub fn find_length(nums1: Vec<i32>, nums2: Vec<i32>) -> i32 {
-        let mut dp = vec![vec![0; nums2.len()]; nums1.len()];
+        let mut dp = vec![0; nums2.len() + 1];
         let mut max = 0;
-        for (i, n1) in nums1.iter().enumerate() {
-            for (j, n2) in nums2.iter().enumerate() {
-                if n1 == n2 && (i == 0 || j == 0) {
-                    dp[i][j] = 1;
-                } else if n1 == n2 {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
-                }
-                max = max.max(dp[i][j]);
+        for n1 in nums1.iter() {
+            for (j, n2) in nums2.iter().enumerate().rev() {
+                dp[j + 1] = if n1 == n2 { dp[j] + 1 } else { 0 };
             }
+            max = max.max(*dp.iter().max().unwrap());
         }
         max
     }
