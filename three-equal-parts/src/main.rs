@@ -1,47 +1,49 @@
 impl Solution {
-    fn convert_binary(arr: &[i32]) -> Vec<i32> {
-        let mut result = vec![];
-        let mut is_lead_zero = false;
-        for n in arr {
-            if !is_lead_zero && *n == 0 {
-                continue;
-            } else if !is_lead_zero && *n == 1 {
-                is_lead_zero = true;
-            }
-            result.push(*n);
+    pub fn three_equal_parts(a: Vec<i32>) -> Vec<i32> {
+        let ones = a.iter().filter(|&n| *n == 1).count();
+        if ones == 0 {
+            return vec![0, 2];
         }
-        result
-    }
-    pub fn three_equal_parts(arr: Vec<i32>) -> Vec<i32> {
-        let results = vec![-1, -1];
-        for i in 0..=arr.len() - 2 {
-            let first = arr.get(0..i + 1).unwrap();
-            for j in i + 2..=arr.len() - 1 {
-                let second = arr.get(i + 1..j).unwrap();
-                let f = Solution::convert_binary(first);
-                let s = Solution::convert_binary(second);
-                // println!("i = {} j = {}", i, j);
-
-                // println!("first = {:?} second = {:?} ", first, second);
-
-                // println!("f = {} s = {}", f, s);
-                if f > s {
-                    continue;
-                } else if f < s {
-                    break;
-                }
-
-                let third = arr.get(j..).unwrap();
-                // println!("first = {:?} second = {:?} third ={:?}", first, second, third);
-
-                let t = Solution::convert_binary(third);
-                if f != t {
-                    break;
-                }
-                return vec![i as i32, j as i32];
-            }
+        if ones % 3 != 0 {
+            return vec![-1, -1];
         }
-        results
+        let part_ones = ones / 3;
+        let trailing_zeros = (0..a.len()).rev().take_while(|&idx| a[idx] == 0).count();
+        
+        let find_part_end = |start| -> Option<usize> {
+            let mut ones = 0;
+            let mut i = start;
+            while ones < part_ones {
+                if a[i] == 1 {
+                    ones += 1;
+                }
+                i += 1;
+            }
+            if !(i..(i+trailing_zeros)).all(|idx| a[idx] == 0) {
+                return None;
+            }
+            Some(i + trailing_zeros - 1)
+        };
+        
+        let i = match find_part_end(0) {
+            Some(i) => i,
+            None => return vec![-1, -1],
+        };
+        
+        let j = match find_part_end(i+1) {
+            Some(j) => j + 1,
+            None => return vec![-1, -1],
+        };
+        
+        if !(0..i+1).rev().zip((i+1..j).rev()).all(|t| a[t.0] == a[t.1]) {
+            return vec![-1, -1];
+        }
+        
+        if !(i+1..j).rev().zip((j..a.len()).rev()).all(|t| a[t.0] == a[t.1]) {
+            return vec![-1, -1];
+        }
+        
+        vec![i as i32, j as i32]
     }
 }
 
