@@ -1,19 +1,6 @@
 impl Solution {
-    pub fn stone_game(piles: Vec<i32>) -> bool {
-        let n = piles.len();
-        let mut dp = vec![vec![0; n + 2]; n + 2];
-        for size in 1..=n {
-            for i in 0..=n - size {
-                let j = i + size - 1;
-                let parity = (j + i + n) % 2;
-                if parity == 1 {
-                    dp[i + 1][j + 1] = (piles[i] + dp[i + 2][j + 1]).max(piles[j] + dp[i + 1][j]);
-                } else {
-                    dp[i + 1][j + 1] = (-piles[i] + dp[i + 2][j + 1]).min(-piles[j] + dp[i + 1][j]);
-                }
-            }
-        }
-        dp[1][n] > 0
+    pub fn stone_game(_: Vec<i32>) -> bool {
+        true
     }
 }
 
