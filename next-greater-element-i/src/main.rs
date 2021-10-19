@@ -3,17 +3,21 @@ use std::collections::HashMap;
 impl Solution {
     pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
         let mut map = HashMap::new();
-        for (i, n1) in nums2.iter().enumerate() {
-            map.insert(n1, -1);
-            for n2 in nums2.iter().skip(i + 1) {
-                if n2 > n1 {
-                    map.insert(n1, *n2);
-                    break;
-                }
+        let mut stack = vec![];
+        let mut greater = vec![-1; nums2.len()];
+        for (i, n) in nums2.iter().enumerate() {
+            while !stack.is_empty() && *n > nums2[*stack.last().unwrap() as usize] {
+                let i = stack.pop().unwrap() as usize;
+                greater[i] = *n;
             }
+            stack.push(i);
+            map.insert(n, i);
         }
 
-        nums1.iter().map(|x| *map.get(x).unwrap()).collect()
+        nums1
+            .iter()
+            .map(|x| greater[*map.get(x).unwrap()])
+            .collect()
     }
 }
 
@@ -26,6 +30,6 @@ fn main() {
     );
     println!(
         "{:?}",
-        Solution::next_greater_element(vec![2,4], vec![1, 2, 3, 4])
+        Solution::next_greater_element(vec![2, 4], vec![1, 2, 3, 4])
     );
 }
