@@ -12,7 +12,7 @@ var traverse = function(node, next) {
   let n = node;
   while (n?.next != null || n?.child != null) {
     if (n.child) {
-      let { next, child } = n;
+      const { next, child } = n;
       n.next = child;
       child.prev = n;
       n.child = null;
