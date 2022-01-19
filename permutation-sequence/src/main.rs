@@ -2,7 +2,7 @@ impl Solution {
     pub fn get_permutation(n: i32, k: i32) -> String {
         let array = (1..=n).collect::<Vec<i32>>();
         fn permutation(array: Vec<i32>, k: i32, results: &mut Vec<Vec<i32>>, candidate: Vec<i32>) {
-            if array.is_empty() {
+            if array.len() == 0 {
                 results.push(candidate);
                 return;
             }
