@@ -1,23 +1,19 @@
 impl Solution {
-    fn can_eat(piles: &[i32], mid: u64, h: u64) -> bool {
+    fn can_eat(piles: &[i32], mid: i32, h: i32) -> bool {
         let mut hours = 0;
         for pile in piles {
-            let mut dh = *pile as u64 / mid;
-            dh += if *pile as u64 % mid > 0 { 1 } else { 0 };
+            let mut dh = *pile / mid;
+            dh += if *pile % mid > 0 { 1 } else { 0 };
             hours += dh;
         }
         hours <= h
     }
     pub fn min_eating_speed(piles: Vec<i32>, h: i32) -> i32 {
-        let sum = piles.iter().map(|&n| n as u64).sum::<u64>();
-        if sum < h as u64 {
-            return 1;
-        }
-        let mut left: u64 = 1;
-        let mut right: u64 = *piles.iter().max().unwrap() as u64;
+        let mut left: i32 = 1;
+        let mut right: i32 = 1000000000;
         while left < right {
             let mid = (left + right) / 2;
-            if Solution::can_eat(&piles, mid, h as u64) {
+            if Solution::can_eat(&piles, mid, h) {
                 right = mid;
             } else {
                 left = mid + 1;
