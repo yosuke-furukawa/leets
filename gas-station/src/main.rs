@@ -1,30 +1,21 @@
 impl Solution {
     pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
-        let mut answer = -1;
-        let len = gas.len();
-        if len == 1 && gas[0] >= cost[0] {
-            return 0;
-        }
-        for i in 0..len {
-            let mut tank = 0;
-            let mut position = i;
-            if gas[i] <= cost[i] {
-                continue;
-            }
-            loop {
-                tank += gas[position];
-                tank -= cost[position];
-                if tank < 0 {
-                    break;
-                }
-                position = (position + 1) % len;
-                if position == i {
-                    answer = i as i32;
-                    break;
-                }
+        let mut start = 0;
+        let mut total = 0;
+        let mut tank = 0;
+        for i in 0..gas.len() {
+            tank += gas[i] - cost[i];
+            if tank < 0 {
+                start = i + 1;
+                total += tank;
+                tank = 0;
             }
         }
-        answer
+        if total + tank < 0 {
+            -1
+        } else {
+            start as i32
+        }
     }
 }
 
