@@ -35,6 +35,7 @@ impl Solution {
         -1
     }
 }
+
 struct Solution;
 
 #[macro_export]
@@ -51,8 +52,5 @@ macro_rules! grid {
 }
 
 fn main() {
-    println!(
-        "{}",
-        Solution::shortest_path_length(grid![[1, 2, 3], [0], [0], [0]])
-    );
+    println!("{}", Solution::shortest_path_length(grid![[1, 2, 3], [0], [0], [0]]));
 }
