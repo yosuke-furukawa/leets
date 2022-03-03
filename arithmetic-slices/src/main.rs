@@ -3,29 +3,17 @@ impl Solution {
         if a.len() < 3 {
             return 0;
         }
-
-        let mut result = 0;
+        let mut res = 0;
         let mut count = 0;
-        let mut diff = -100000000;
-        for nums in a.windows(3) {
-            let d1 = nums[1] - nums[0];
-            let d2 = nums[2] - nums[1];
-            match (diff, d1, d2) {
-                (_, _, _) if diff != d1 && d1 == d2 => count += 3,
-                (_, _, _) if diff == d1 && d1 == d2 => count += 1,
-                (_, _, _) if diff == d1 && d1 != d2 => {
-                    result += (count - 1) * (count - 2) / 2;
-                    count = 0;
-                }
-                _ => count = 0,
+        for i in 2..a.len() {
+            if a[i] - a[i - 1] == a[i - 1] - a[i - 2] {
+                count += 1;
+            } else {
+                res += count * (count + 1) / 2;
+                count = 0;
             }
-            diff = d1;
         }
-
-        if count > 1 {
-            result += (count - 1) * (count - 2) / 2;
-        }
-        result
+        res + count * (count + 1) / 2
     }
 }
 
