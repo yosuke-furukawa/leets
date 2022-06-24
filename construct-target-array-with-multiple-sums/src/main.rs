@@ -2,25 +2,25 @@ use std::collections::BinaryHeap;
 
 impl Solution {
     pub fn is_possible(target: Vec<i32>) -> bool {
-        let mut arrays = BinaryHeap::new();
-        let mut sum = 0;
-        for n in target {
-            sum += n;
-            arrays.push(n);
+        let mut sum = 0i64;
+        let mut heap = BinaryHeap::<i32>::new();
+        for x in target {
+            heap.push(x);
+            sum += x as i64;
         }
-        while let Some(num) = arrays.pop() {
-            if num == 1 {
-                break;
+        while let Some(mut x) = heap.pop() {
+            sum -= x as i64;
+            if x == 1 || sum == 1 {
+                return true;
             }
-            sum -= num;
-            if sum < 1 || num <= sum {
+            if (x as i64) < sum || sum == 0 || (x as i64) % sum == 0 {
                 return false;
             }
-            let n = num % sum;
-            arrays.push(n);
-            sum += n;
+            x = ((x as i64) % sum) as i32;
+            sum += x as i64;
+            heap.push(x);
         }
-        true
+        false
     }
 }
 
