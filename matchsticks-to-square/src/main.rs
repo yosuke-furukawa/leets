@@ -1,28 +1,18 @@
 impl Solution {
-    fn backtrack(matches: &mut [i32], matchsticks: &[i32], match_index: usize) -> bool {
-        if match_index == matchsticks.len() {
-            return matches.iter().all(|m| *m == 0);
-        }
-        for j in 0..4 {
-            if matches[j] - matchsticks[match_index] >= 0 {
-                matches[j] -= matchsticks[match_index];
-                if Solution::backtrack(matches, matchsticks, match_index + 1) {
-                    return true;
-                }
-                matches[j] += matchsticks[match_index];
-            }
-        }
-        false
+    pub fn makesquare(mut matchsticks: Vec<i32>) -> bool {
+        let perim: i32 = matchsticks.iter().sum();
+        perim % 4 == 0 && Self::solve(&mut matchsticks[..], 0, 0, 1, perim / 4)
     }
-    pub fn makesquare(matchsticks: Vec<i32>) -> bool {
-        let sum = matchsticks.iter().sum::<i32>();
-        if sum % 4 != 0 {
-            return false;
-        }
 
-        let avg = sum / 4;
-        let mut matches = vec![avg; 4];
-        Solution::backtrack(&mut matches, &matchsticks, 0)
+    fn solve(sticks: &mut [i32], l: usize, len: i32, side: u8, max: i32) -> bool {
+        side == 4
+            || len == max && Self::solve(sticks, 0, 0, side + 1, max)
+            || (l..sticks.len()).any(|i| {
+                let stick = std::mem::take(&mut sticks[i]);
+                let res = stick != 0 && Self::solve(sticks, i + 1, len + stick, side, max);
+                sticks[i] = stick;
+                res
+            })
     }
 }
 
@@ -45,5 +35,9 @@ fn main() {
     println!(
         "{}",
         Solution::makesquare(vec![5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3])
+    );
+    println!(
+        "{}",
+        Solution::makesquare(vec![1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 102])
     );
 }
