@@ -28,4 +28,5 @@ struct Solution;
 
 fn main() {
     println!("{:?}", Solution::next_greater_elements(vec![1, 2, 1]));
+    println!("{:?}", Solution::next_greater_elements(vec![1, 2, 3, 4, 3]));
 }
