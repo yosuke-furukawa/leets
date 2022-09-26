@@ -5,21 +5,14 @@ impl Solution {
         let not_equals = equations.iter().filter(|s| s.as_bytes()[1] == b'!');
         for equal in equals {
             let chars: Vec<char> = equal.chars().collect();
-            let c1 = chars[0].min(chars[3]) as usize - 'a' as usize;
-            let c2 = chars[0].max(chars[3]) as usize - 'a' as usize;
-
-            if c1 == c2 && chars[1] == '=' {
-                continue;
-            }
+            let c1 = chars[0] as usize - 'a' as usize;
+            let c2 = chars[3] as usize - 'a' as usize;
             uf.union(c1, c2);
         }
         for not_equal in not_equals {
             let chars: Vec<char> = not_equal.chars().collect();
-            let c1 = chars[0].min(chars[3]) as usize - 'a' as usize;
-            let c2 = chars[0].max(chars[3]) as usize - 'a' as usize;
-            if c1 == c2 && chars[1] == '!' {
-                return false;
-            }
+            let c1 = chars[0] as usize - 'a' as usize;
+            let c2 = chars[3] as usize - 'a' as usize;
             if uf.find(c1) == uf.find(c2) {
                 return false;
             }
