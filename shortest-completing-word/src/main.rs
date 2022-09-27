@@ -12,8 +12,8 @@ impl Solution {
             for c in word.chars() {
                 word_count[c as usize - 'a' as usize] += 1;
             }
-            if word_count.iter().zip(plate.iter()).all(|(&a, &b)| a >= b) && ans.is_empty()
-                || word.len() < ans.len()
+            if word_count.iter().zip(plate.iter()).all(|(&a, &b)| a >= b) && (ans.is_empty()
+                || word.len() < ans.len())
             {
                 ans = word;
             }
