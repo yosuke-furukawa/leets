@@ -1,6 +1,6 @@
 impl Solution {
     pub fn three_sum_closest(nums: Vec<i32>, target: i32) -> i32 {
-        let mut min = 1_000_000_000;
+        let mut min = std::i32::MAX;
         let mut nums = nums;
         let mut result = 0;
         nums.sort_unstable();
