@@ -7,7 +7,7 @@ impl Solution {
             head = node.next;
         }
         array.remove(array.len() / 2);
-        to_list(array.into_iter().collect())
+        to_list(array)
     }
 }
 
