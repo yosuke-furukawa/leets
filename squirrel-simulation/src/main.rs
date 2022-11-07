@@ -10,7 +10,7 @@ impl Solution {
         let mut max_tree_squirrel = -1000000000;
         fn distance(a: &[i32], b: &[i32]) -> i32 {
             (a[0] - b[0]).abs() + (a[1] - b[1]).abs()
-        };
+        }
         for nut in nuts {
             total_distance += distance(&nut, &tree) * 2;
             max_tree_squirrel =
