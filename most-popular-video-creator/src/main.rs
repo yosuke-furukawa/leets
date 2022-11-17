@@ -24,8 +24,8 @@ impl Solution {
                 .insert(creator);
         }
         for (i, creator) in creators.iter().enumerate() {
-            let entry = id_map.entry(creator.to_string()).or_insert(BTreeSet::new());
-            entry.insert(Reverse((views[i], Reverse(ids[i].clone()))));
+            let entry = id_map.entry(creator).or_insert(BTreeSet::new());
+            entry.insert(Reverse((views[i], Reverse(&ids[i]))));
         }
         let creators = score_map.get(&max).unwrap();
         let mut results = vec![];
