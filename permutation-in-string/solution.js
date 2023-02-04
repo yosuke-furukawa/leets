@@ -15,8 +15,6 @@ var checkInclusion = function(s1, s2) {
   
   for (var i=0;i<=s2.length-s1.length;i++) {
     var s2substr = s2.substring(i, i+s1.length);
-    // console.log(s2substr);
-    // console.log(i, s2.length-s1.length);
     const m = new Map(map);
     
     for (const t of s2substr) {
